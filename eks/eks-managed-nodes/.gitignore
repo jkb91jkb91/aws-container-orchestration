@@ -1,0 +1,28 @@
+.vagrant
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# Terraform folder roboczy
+.terraform/
+
+# Lock
+.terraform.lock.hcl
+
+*Zone.Identifier
+
+projectdevops.eu.crt
+projectdevops.eu.key
+.terraform/
+*.tfplan
+crash.log
+*.log
+.terraform.rc
+output.log  
+plan.out  
+*.backup  
+*.bak
+
