@@ -195,8 +195,14 @@ LogGroups:
 CronJob1 will log into → /eks/cronjob/job_number1
 CronJob2 will log into → /eks/cronjob/job_number2
 
+In Fargate observability is done thgrough Fluent Bit that is rather implemented under the hood by using these 2 commands:  
+1) Create namespace  aws-observability with specific label  
 
-1) Create namespace  aws-observability  
+```
+kubectl create namespace aws-observability
+kubectl label namespace aws-observability aws-observability=enabled
+```
+Or just apply this:  
 ```
 apiVersion: v1
 kind: Namespace
