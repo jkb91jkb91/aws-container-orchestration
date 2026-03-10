@@ -183,7 +183,7 @@ spec:
 
 2) IRSA for POD
 
-## HOW TO CONFIGURE CLOUDWATCH LOGS FOR RUNNING POD WITH FLUENT BIT
+## HOW CLOUDWATCH LOGS ARE CONFIGURED: FLUENT BIT
 https://docs.aws.amazon.com/eks/latest/userguide/fargate-logging.html?source=post_page-----dc23d3826565
 
 Each CronJob should have  
@@ -268,4 +268,31 @@ data:
         auto_create_group true  
 ```
 
+## CORE DNS: HOW ITS CONFIGURED  
+1) For core dns it is required to have route between ECR , so in this case VPC-ENDPOINTS are used  
+2) CoreDns fix patch for FARGATE:  kubectl patch deployment coredns -n kube-system --type json -p='[{"op": "remove", "path": "/spec/template/spec/tolerations"}]' || true  
+3) For core dns there is a need to craete fargate profile that contains specific selector  
+```
+resource "aws_eks_fargate_profile" "system" {
+  cluster_name           = aws_eks_cluster.this.name
+  fargate_profile_name   = "${var.cluster_name}-fp-system"
+  pod_execution_role_arn = aws_iam_role.eks_fargate_pod_execution_role.arn
+  subnet_ids             = var.subnet_ids
 
+  selector {
+    namespace = "kube-system"
+    labels = {
+      "k8s-app" = "kube-dns"
+    }
+  } # Required for core-dns , otherwise you will get >>>>>>
+  #kube-system   coredns-7d58d485c9-c8bz6   0/1     Pending   0          47m
+  #kube-system   coredns-7d58d485c9-dk75z   0/1     Pending   0          47m
+  # <<<<<<<
+
+  depends_on = [
+    aws_eks_cluster.this,
+    aws_iam_role_policy_attachment.eks_fargate_pod_execution_role_policy
+  ]
+}
+
+```
