@@ -30,7 +30,12 @@ Whole setup is placed into terraform modules:
 ############################ PRACTICAL PART ################################################  
 ############################################################################################
 ## PREQUISUITES  ##############################################################################  
-1. **AWS credentials** configured in your local environment or use SSO ( not included in this project )  
+1a. SSO
+
+
+
+ALTERNATIVE WAY OF CONNECTING WITH AWS ***not recommended but still working*
+1b. **AWS credentials** configured in your local environment 
 
 ```bash
 export AWS_ACCESS_KEY_ID="your-access-key"
@@ -60,10 +65,6 @@ terraform apply
 aws ssm start-session --target i-XXXXXXXXXXXX --region <region>
 kubectl get pods
 ```
-
-
-
-
 
 
 ########################################## THEORETICAL PART ##################################  
