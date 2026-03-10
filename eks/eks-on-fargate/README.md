@@ -127,52 +127,22 @@ FOR LOGGING INTO CLUSTER WE HAVE TWO OPTIONS >>>
 kubectl create ns jobs
 ```
 
-2) Create first cronjobs  
+2) Create Job  
+This job will print out log in json format that is great for further debugging or for filtering  
 ```
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: cronjob-jeden
-  namespace: jobs
-spec:
-  schedule: "*/15 * * * *"
-  concurrencyPolicy: Forbid
-  jobTemplate:
-    spec:
-      backoffLimit: 5
-      template:
-        metadata:
-          labels:
-            cronjob: cronjob-jeden-label   # <-- LABEL USED IN CONFIG MAP
-        spec:
-          restartPolicy: Never
-          containers:
-            - name: main
-              image: <YOUR_IMAGE>
-```
-
-3) Create second cronjobs  
-```
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: cronjob-dwa
-  namespace: jobs
-spec:
-  schedule: "0 * * * *"
-  concurrencyPolicy: Forbid
-  jobTemplate:
-    spec:
-      backoffLimit: 5
-      template:
-        metadata:
-          labels:
-            cronjob: cronjob-dwa-label     # <-- LABEL USED IN CONFIG MAP
-        spec:
-          restartPolicy: Never
-          containers:
-            - name: main
-              image: <YOUR_IMAGE>
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: hello-job
+#   namespace: default
+# spec:
+#   template:
+#     spec:
+#       restartPolicy: Never
+#       containers:
+#         - name: hello
+#           image: jkb91/logging_json_sre:1.0
+#   backoffLimit: 1
 ```
 
 ## PERMISSIONS  
